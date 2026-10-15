@@ -9,11 +9,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-// Konfigurasi Langsung Supabase PostgreSQL untuk Vercel
-$dbHost = 'aws-0-ap-southeast-1.pooler.supabase.com'; // Sesuaikan host Supabase Anda
-$dbPort = '6543';                                   // Port pooling (biasanya 6543)
-$dbUser = 'postgres.xxxx';                          // User Supabase Anda
-$dbPass = 'password_supabase_anda';                 // Password Supabase Anda
+// Konfigurasi Supabase PostgreSQL
+$dbHost = 'aws-0-ap-southeast-1.pooler.supabase.com';
+$dbPort = '6543';
+$dbUser = 'postgres.xxxx'; // Sesuaikan user Supabase Anda
+$dbPass = 'password_supabase_anda'; // Sesuaikan password Supabase Anda
 $dbName = 'postgres';
 
 try {
@@ -24,19 +24,31 @@ try {
         PDO::ATTR_TIMEOUT => 5
     ]);
 
-    // Contoh ambil data tabel dosen (sesuaikan nama tabel Anda jika beda)
-    $stmt = $pdo->query("SELECT * FROM dosen LIMIT 10");
-    $data = $stmt->fetchAll();
+    // Mengambil parameter aksi dari frontend (misal: statistik atau list penelitian)
+    $action = $_GET['action'] ?? 'list';
 
-    echo json_encode([
-        'status' => 'success',
-        'data' => $data
-    ]);
+    if ($action === 'stats') {
+        // Hitung total dosen dan penelitian dari Supabase
+        $stmtDosen = $pdo->query("SELECT COUNT(*) as total FROM dosen");
+        $totalDosen = $stmtDosen->fetch()['total'] ?? 0;
+
+        $stmtPenelitian = $pdo->query("SELECT COUNT(*) as total FROM penelitian");
+        $totalPenelitian = $stmtPenelitian->fetch()['total'] ?? 0;
+
+        echo json_encode([
+            'total_dosen' => $totalDosen,
+            'total_penelitian' => $totalPenelitian
+        ]);
+    } else {
+        // Ambil data utama penelitian untuk tabel/list
+        $stmt = $pdo->query("SELECT * FROM penelitian LIMIT 50");
+        $data = $stmt->fetchAll();
+        echo json_encode($data);
+    }
 
 } catch (Exception $e) {
-    http_response_code(500);
     echo json_encode([
-        'status' => 'error',
+        'error' => true,
         'message' => $e->getMessage()
     ]);
 }
