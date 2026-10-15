@@ -10,10 +10,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 // Konfigurasi Supabase PostgreSQL
-$dbHost = 'aws-0-ap-southeast-1.pooler.supabase.com';
-$dbPort = '6543';
-$dbUser = 'postgres.xxxx'; // Sesuaikan user Supabase Anda
-$dbPass = 'password_supabase_anda'; // Sesuaikan password Supabase Anda
+$dbHost = 'db.xaiwhusnuzdmddcvszl.supabase.co';
+$dbPort = '5432';
+$dbUser = 'postgres'; // Sesuaikan user Supabase Anda
+$dbPass = 'password_database_supabase_anda'; // Sesuaikan password Supabase Anda
 $dbName = 'postgres';
 
 try {
