@@ -17,25 +17,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-// 1. Konfigurasi Database (MySQL XAMPP dengan Fallback SQLite)
-$dbHost = 'localhost';
-$dbUser = 'root';
-$dbPass = '';
-$dbName = 'penelitian_dosen_pnl';
+// 1. Konfigurasi Database Pintar (Otomatis deteksi Vercel/Supabase atau XAMPP Lokal)
+if (getenv('DATABASE_URL') || getenv('SUPABASE_URL')) {
+    // KODE JIKA BERJALAN DI VERCEL (SUPABASE POSTGRESQL)
+    // Ambil dari environment variables Vercel atau masukkan langsung link Supabase Anda di sini
+    $dbHost = 'aws-0-ap-southeast-1.pooler.supabase.com'; // Sesuaikan host Supabase Anda jika perlu$dbPort = '6543'; // Port pooling Supabase (biasanya 6543 atau 5432)
+    $dbUser = 'postgres.xxxx'; // User database Supabase Anda$dbPass = 'password_supabase_anda'; 
+    $dbName = 'postgres';$pdo = null;
+    $dbType = 'pgsql';
+    try {
+        $dsn = "pgsql:host=$dbHost;port=$dbPort;dbname=$dbName";
+        $pdo = new PDO($dsn,$dbUser, $dbPass, [ PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_TIMEOUT => 5 ]);$dbType = 'pgsql';
+    } catch (Exception $e) {
+        // Fallback jika gagal
+    }
+} else {
+    // KODE JIKA BERJALAN DI XAMPP LOKAL (TETAP AMAN UNTUK LOKAL)
+    $dbHost = 'localhost';$dbUser = 'root';
+    $dbPass = '';$dbName = 'penelitian_dosen_pnl';
 
-$pdo = null;
-$dbType = 'mysql';
-
-try {
-    $pdo = new PDO("mysql:host=$dbHost;charset=utf8mb4", $dbUser, $dbPass, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        PDO::ATTR_TIMEOUT => 5
-    ]);
-    
-    $pdo->exec("CREATE DATABASE IF NOT EXISTS `$dbName` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
-    $pdo->exec("USE `$dbName`");
+    $pdo = null;
     $dbType = 'mysql';
+    try {
+        $pdo = new PDO("mysql:host=$dbHost;charset=utf8mb4", $dbUser, $dbPass, [ PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_TIMEOUT => 5 ]);$pdo->exec("CREATE DATABASE IF NOT EXISTS `$dbName` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+        $pdo->exec("USE `$dbName`");
+        $dbType = 'mysql';
+    } catch (Exception $e) {
+        // Fallback SQLite jika XAMPP mati
+        $pdo = new PDO("sqlite:" . __DIR__ . "/database.sqlite", null, null, [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+        ]);
+        $dbType = 'sqlite';
+    }
 } catch (Exception $e) {
     $sqliteFile = __DIR__ . '/database_pnl.sqlite';
     try {
