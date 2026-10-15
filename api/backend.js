@@ -1,4 +1,4 @@
-<?php
+<? php
 header('Content-Type: application/json; charset=UTF-8');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
@@ -14,9 +14,9 @@ $action = $_GET['action'] ?? '';
 // Jika diminta statistik (total dosen & penelitian)
 if ($action === 'stats' || isset($_GET['stats'])) {
     // Coba baca dari file json jika ada, atau berikan nilai default yang sesuai
-    $dosenFile = __DIR__ . '/../pnl_dosen.json';
+    $dosenFile = __DIR__. '/../pnl_dosen.json';
     $dataDosen = file_exists($dosenFile) ? json_decode(file_get_contents($dosenFile), true) : [];
-    
+
     $totalDosen = count($dataDosen) > 0 ? count($dataDosen) : 314; // Sesuai data lokal Kakak
     $totalPenelitian = 750;
 
@@ -28,7 +28,7 @@ if ($action === 'stats' || isset($_GET['stats'])) {
 }
 
 // Mengambil data utama penelitian dari file JSON lokal
-$jsonFile = __DIR__ . '/../pnl_data_full.json';
+$jsonFile = __DIR__. '/../pnl_data_full.json';
 if (file_exists($jsonFile)) {
     $jsonData = file_get_contents($jsonFile);
     echo $jsonData;
