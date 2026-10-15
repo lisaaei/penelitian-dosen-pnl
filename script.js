@@ -283,7 +283,7 @@ function setupEventListeners() {
 // PENGAMBILAN DATA DARI BACKEND
 // =====================================================================
 function fetchStats() {
-    fetch('backend.php?action=stats')
+    fetch('api/backend.php?action=stats')
         .then(res => res.json())
         .then(data => {
             if (data.status === 'success' && data.stats) {
@@ -313,7 +313,7 @@ function updateProdiOptions(jurusan) {
         });
         prodiSelect.disabled = false;
     } else {
-        fetch(`backend.php?action=get_prodi&jurusan=${encodeURIComponent(jurusan)}`)
+        fetch(`api/backend.php?action=get_prodi&jurusan=${encodeURIComponent(jurusan)}`)
             .then(res => res.json())
             .then(data => {
                 if (data.status === 'success' && data.data && data.data.length > 0) {
@@ -325,7 +325,7 @@ function updateProdiOptions(jurusan) {
                     });
                 }
             })
-            .catch(() => {});
+            .catch(() => { });
         prodiSelect.disabled = false;
     }
 }
@@ -342,7 +342,7 @@ function performSearch() {
         nama: namaDosenInput.value.trim()
     });
 
-    fetch(`backend.php?${params.toString()}`)
+    fetch(`api/backend.php?${params.toString()}`)
         .then(res => res.json())
         .then(response => {
             loadingIndicator.classList.add('hidden');
@@ -535,7 +535,7 @@ function openDosenDetailModal(dosenId) {
     modalNamaDosen.textContent = 'Memuat...';
     portfolioTableBody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding: 2rem;">Mengambil data portofolio dari database...</td></tr>`;
 
-    fetch(`backend.php?action=detail_dosen&id=${dosenId}`)
+    fetch(`api/backend.php?action=detail_dosen&id=${dosenId}`)
         .then(res => res.json())
         .then(response => {
             if (response.status === 'success' && response.data) {
@@ -677,34 +677,34 @@ function handleSyncSingle() {
     showSyncFeedback('Sedang menghubungi API PDDikti Kemdiktisaintek & menyimpan ke database...', 'loading');
     btnSyncSingle.disabled = true;
 
-    fetch('backend.php?action=sync_url', {
+    fetch('api/backend.php?action=sync_url', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url: url })
     })
-    .then(res => res.json())
-    .then(result => {
-        btnSyncSingle.disabled = false;
-        if (result.status === 'success') {
-            showSyncFeedback(`✓ ${result.message} (${result.stats.penelitian} penelitian, ${result.stats.pengabdian} pengabdian)`, 'success');
-            showToast(`Berhasil menyinkronkan data: ${result.nama_dosen}`);
-            fetchStats();
-            performSearch();
+        .then(res => res.json())
+        .then(result => {
+            btnSyncSingle.disabled = false;
+            if (result.status === 'success') {
+                showSyncFeedback(`✓ ${result.message} (${result.stats.penelitian} penelitian, ${result.stats.pengabdian} pengabdian)`, 'success');
+                showToast(`Berhasil menyinkronkan data: ${result.nama_dosen}`);
+                fetchStats();
+                performSearch();
 
-            if (result.dosen_id) {
-                setTimeout(() => {
-                    openDosenDetailModal(result.dosen_id);
-                }, 600);
+                if (result.dosen_id) {
+                    setTimeout(() => {
+                        openDosenDetailModal(result.dosen_id);
+                    }, 600);
+                }
+            } else {
+                showSyncFeedback(`Gagal: ${result.message}`, 'error');
             }
-        } else {
-            showSyncFeedback(`Gagal: ${result.message}`, 'error');
-        }
-    })
-    .catch(err => {
-        btnSyncSingle.disabled = false;
-        showSyncFeedback('Terjadi kesalahan saat memproses sinkronisasi.', 'error');
-        console.error(err);
-    });
+        })
+        .catch(err => {
+            btnSyncSingle.disabled = false;
+            showSyncFeedback('Terjadi kesalahan saat memproses sinkronisasi.', 'error');
+            console.error(err);
+        });
 }
 
 function handleSyncAllPnl() {
@@ -715,7 +715,7 @@ function handleSyncAllPnl() {
     showSyncFeedback('Sedang menarik daftar lengkap dosen PNL dari PDDikti (memerlukan beberapa detik)...', 'loading');
     btnSyncAllPnl.disabled = true;
 
-    fetch('backend.php?action=sync_pnl_all')
+    fetch('api/backend.php?action=sync_pnl_all')
         .then(res => res.json())
         .then(result => {
             btnSyncAllPnl.disabled = false;
@@ -768,7 +768,7 @@ function handleSyncModalDosen() {
 
     showToast(`Sedang menghubungi API PDDikti Kemdiktisaintek untuk ${dName}...`);
 
-    fetch(`backend.php?action=sync_dosen&id=${dId}`)
+    fetch(`api/backend.php?action=sync_dosen&id=${dId}`)
         .then(res => res.json())
         .then(result => {
             if (btn) {
@@ -806,7 +806,7 @@ function syncDosenQuick(dosenId, dosenName, btnElement) {
 
     showToast(`Menarik data penelitian resmi ${dosenName} dari PDDikti...`);
 
-    fetch(`backend.php?action=sync_dosen&id=${dosenId}`)
+    fetch(`api/backend.php?action=sync_dosen&id=${dosenId}`)
         .then(res => res.json())
         .then(result => {
             if (btnElement) {
@@ -851,13 +851,13 @@ function handleSyncBatchPnl() {
 
     let offset = 0;
     function runNextBatch() {
-        fetch(`backend.php?action=sync_batch&offset=${offset}&limit=5`)
+        fetch(`api/backend.php?action=sync_batch&offset=${offset}&limit=5`)
             .then(res => res.json())
             .then(res => {
                 if (res.status === 'success') {
                     const totalRemaining = res.total_remaining;
                     const syncedNames = (res.synced || []).map(s => `${s.nama} (${s.total_penelitian} penelitian)`).join(', ');
-                    
+
                     showSyncFeedback(`Sedang memproses... Tersinkron: ${syncedNames}. Sisa yang belum tersinkron: ${totalRemaining} dosen.`, 'loading');
                     fetchStats();
 
@@ -922,7 +922,7 @@ async function handleExportExcel() {
     showToast('Menyiapkan file Excel lengkap 314 Dosen & 1.564 Penelitian...');
 
     try {
-        const res = await fetch('backend.php?action=list');
+        const res = await fetch('api/backend.php?action=list');
         const json = await res.json();
         const penelitianList = (json && json.data) ? json.data : fallbackData;
 
