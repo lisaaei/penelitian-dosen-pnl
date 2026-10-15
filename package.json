@@ -1,0 +1,15 @@
+{
+  "name": "penelitian-dosen-pnl",
+  "version": "1.0.0",
+  "description": "Portal Penelitian Dosen Politeknik Negeri Lhokseumawe (PNL) Terintegrasi PDDikti Kemdiktisaintek & Supabase",
+  "main": "api/backend.js",
+  "scripts": {
+    "start": "node api/backend.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.1"
+  },
+  "engines": {
+    "node": ">=18.x"
+  }
+}
