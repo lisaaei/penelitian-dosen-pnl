@@ -435,6 +435,10 @@ header p {
     padding: 1.75rem 2rem;
     margin-bottom: 2rem;
     box-shadow: var(--shadow-md);
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .filter-header-bar {
@@ -457,12 +461,19 @@ header p {
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 1.25rem;
     margin-bottom: 1.5rem;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .input-group {
     display: flex;
     flex-direction: column;
     gap: 0.375rem;
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .input-group label {
@@ -473,6 +484,10 @@ header p {
 
 .input-group select,
 .input-group input {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
     padding: 0.65rem 0.875rem;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
@@ -480,6 +495,12 @@ header p {
     color: var(--text-primary);
     font-family: inherit;
     font-size: 0.875rem;
+}
+
+.input-group select {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .input-group select:focus,
@@ -493,6 +514,10 @@ header p {
     position: relative;
     display: flex;
     align-items: center;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
 }
 
 .search-input-wrap .search-icon {
@@ -503,7 +528,10 @@ header p {
 }
 
 .search-input-wrap input {
-    width: 100%;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
     padding-left: 2.375rem !important;
 }
 
@@ -1268,9 +1296,21 @@ header p {
     }
 
     .filter-section {
-        padding: 1.25rem;
+        padding: 1.25rem 1rem;
         border-radius: var(--radius-lg);
         margin-bottom: 1.5rem;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+
+    .filter-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.875rem;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
     }
 
     .filter-actions {
@@ -1286,7 +1326,7 @@ header p {
     }
 
     .results-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     /* Modal adjustments */
@@ -1433,9 +1473,13 @@ header p {
     }
 
     .filter-section {
-        padding: 1rem 0.875rem;
+        padding: 1.125rem 0.875rem;
         border-radius: 14px;
         margin-bottom: 1.25rem;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
     }
 
     .filter-header-bar h2 {
@@ -1447,9 +1491,12 @@ header p {
     }
 
     .filter-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         gap: 0.875rem;
         margin-bottom: 1.25rem;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
     }
 
     /* iOS Safari 16px font-size fix to prevent forced auto-zoom */
@@ -1459,6 +1506,16 @@ header p {
         font-size: 16px !important;
         padding: 0.65rem 0.75rem;
         min-height: 44px;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    .input-group select {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
     }
 
     .results-header {
