@@ -3,10 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#7c3aed">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <title>Penelitian Dosen - Politeknik Negeri Lhokseumawe (Terintegrasi PDDikti)</title>
     <meta name="description" content="Portal data penelitian dosen Politeknik Negeri Lhokseumawe terintegrasi API PDDikti Kemdiktisaintek.">
-    <link rel="stylesheet" href="style.css?v=4.0">
+    <link rel="stylesheet" href="style.css?v=5.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
@@ -27,7 +30,8 @@
                 <div class="header-actions">
                     <button id="btnExportExcelHeader" class="btn-excel-pill" title="Unduh Seluruh 314 Dosen & 1.564 Penelitian ke File Excel (.xlsx)">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="8" y1="13" x2="16" y2="13"></line><line x1="8" y1="17" x2="16" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                        <span>Export Excel (.xlsx)</span>
+                        <span class="btn-text-desktop">Export Excel (.xlsx)</span>
+                        <span class="btn-text-mobile">Export Excel</span>
                     </button>
                     <div class="status-badge" id="apiStatusBadge">
                         <span class="pulsing-dot"></span>
@@ -37,7 +41,8 @@
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
                         </svg>
-                        Sinkronisasi PDDikti
+                        <span class="btn-text-desktop">Sinkronisasi PDDikti</span>
+                        <span class="btn-text-mobile">Sinkronisasi</span>
                     </button>
                 </div>
             </div>
@@ -224,6 +229,10 @@
 
                 <!-- Table View Container -->
                 <div id="resultsTableContainer" class="table-container hidden">
+                    <div class="table-scroll-hint">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        <span>Geser tabel ke samping untuk melihat kolom lengkap</span>
+                    </div>
                     <table class="pddikti-table">
                         <thead>
                             <tr>
@@ -311,6 +320,10 @@
 
                 <!-- Portfolio Table Container -->
                 <div class="portfolio-table-wrap">
+                    <div class="table-scroll-hint">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        <span>Geser tabel ke samping untuk melihat judul lengkap</span>
+                    </div>
                     <table class="portfolio-table">
                         <thead>
                             <tr>
@@ -352,7 +365,7 @@
 
     <!-- SheetJS for 1-Click Excel Generation -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script src="script.js?v=4.0"></script>
+    <script src="script.js?v=5.0"></script>
 </body>
 
 </html>

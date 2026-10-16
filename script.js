@@ -460,7 +460,7 @@ function displayResults(data) {
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
                     <span>Sumber: ${escapeHtml(item.sumber || 'PDDikti Kemdiktisaintek')}</span>
                 </div>
-                <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                <div class="card-action-row">
                     <button class="btn-detail-card" data-dosen-id="${dosenId}" style="flex: 1;">
                         Lihat Profil & Portofolio
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
